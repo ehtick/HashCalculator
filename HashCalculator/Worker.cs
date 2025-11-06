@@ -51,6 +51,36 @@ namespace TPMPCRCalculator
             return ret;
         }
 
+        public static string GetCustomDigestForAlgorithm(string algorithm, string customValue)
+        {
+            if (string.IsNullOrWhiteSpace(customValue))
+            {
+                return GetZeroDigestForAlgorithm(algorithm);
+            }
+
+            uint digestSize = GetDigestSizeForAlgorithm(algorithm);
+            int expectedLength = (int)digestSize * 2; // Each byte is 2 hex characters
+
+            // Remove all whitespace characters
+            customValue = Regex.Replace(customValue, @"\s+", "");
+
+            // Validate hex string
+            if (!Regex.IsMatch(customValue, @"^[0-9A-Fa-f]*$"))
+            {
+                throw new Exception($"\'{customValue}\' is not a valid hexadecimal string.");
+            }
+
+            if (customValue.Length > expectedLength)
+            {
+                throw new Exception($"Custom value \'{customValue}\' is too long for algorithm {algorithm}. Expected maximum {expectedLength} characters, got {customValue.Length}.");
+            }
+
+            // Pad with leading zeros if necessary
+            customValue = customValue.PadLeft(expectedLength, '0');
+
+            return customValue;
+        }
+
         public static byte[] ComputeHash(string algorithm, byte[] input)
         {
             HashAlgorithmProvider sha = HashAlgorithmProvider.OpenAlgorithm(algorithm);
