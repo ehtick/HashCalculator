@@ -52,6 +52,10 @@
                 <TextBlock Style="{StaticResource BodyTextBlockStyle}" Margin="0,4">A Trusted Platform Module (TPM) Platform Configuration Register (PCR) is a register that can 
                     only be reset to zero when the TPM device is reset and only modified by a one-way (or trap door) function called Extend. The Extend function concatenates the 
                     existing value of the PCR with the parameter of the function and calculates a hash. The digest of the hash becomes the new value of the PCR.</TextBlock>
+                <TextBlock Style="{StaticResource BodyTextBlockStyle}" Margin="0,4">For testing purposes, this tool allows you to start from an arbitrary value of the PCR, or to
+                    specify a Startup Locality. The Startup Locality follows special instructions different from the standard PCR extend operation, but is only valid as the 
+                    first event in a TCG Log and must be measured and extended by the platform firmware if applicable. In no context does a real TPM allow for PCR to be
+                    set to an arbitrary value outside of this initial Startup Locality special case, or the D-RTM reset from (-1) to 0.</TextBlock>
 
                 <TextBlock Style="{StaticResource SubtitleTextBlockStyle}">Hash Calculator Tool</TextBlock>
                 <TextBlock Style="{StaticResource BodyTextBlockStyle}" Margin="0,4">This tool allows to perform different kinds of hash calculations.</TextBlock>
